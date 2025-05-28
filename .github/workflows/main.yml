@@ -1,0 +1,33 @@
+name: Actualizar datos financieros
+
+on:
+  schedule:
+    - cron: '0 16 * * *'  # Ejecutar todos los días a las 16:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update-stock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: |
+          pip install yfinance pandas
+
+      - name: Ejecutar script
+        run: python Actual_Stock.py
+
+      - name: Commit y push cambios
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "📈 Actualización automática"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
