@@ -22,7 +22,9 @@ for ticker_look in tickers_dict:
     # Lista de atributos que te interesan
     attributes_of_interest = [
         "marketCap", "trailingPE", 
-        "forwardPE", "beta", "trailingEps"
+        "forwardPE", "beta", "trailingEps","industry",
+        "sector","fullTimeEmployees","country","ebitda","totalDebt",
+        "totalRevenue","grossProfits","freeCashflow","shortName","trailingPegRatio"
     ]
     
     # Crear un diccionario con solo los atributos deseados
