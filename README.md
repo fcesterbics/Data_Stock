@@ -17,6 +17,17 @@ This repository contains a Python-based automation system for collecting, proces
      - Price-to-Earnings Ratios (`trailingPE`, `forwardPE`)
      - Volatility (`beta`)
      - Earnings per Share (`trailingEps`)
+     - Industry (industry)
+     - Sector (sector)
+     - Number of Full-Time Employees (fullTimeEmployees)
+     - Country (country)
+     - EBITDA (ebitda)
+     - Total Debt (totalDebt)
+     - Total Revenue (totalRevenue)
+     - Gross Profits (grossProfits)
+     - Free Cash Flow (freeCashflow)
+     - Company Name (shortName)
+     - PEG Ratio (trailingPegRatio) 
    - Saves this data into two separate files:
      - `Actual_Stock.csv` → latest closing prices.
      - `Stock_Info.csv` → financial fundamentals.
