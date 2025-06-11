@@ -1,33 +1,33 @@
-name: Actualizar datos financieros
+name: Actualizar datos financieros  # Nombre del workflow
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # Ejecutar todos los días a las 16:00 UTC
-  workflow_dispatch:
+    - cron: '0 16 * * *'  # Ejecutar automáticamente todos los días a las 16:00 UTC
+  workflow_dispatch:       # Permite ejecutar el workflow manualmente desde GitHub
 
 jobs:
   update-stock:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Define el sistema operativo del entorno de ejecución (Ubuntu)
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo  # Paso 1: Clona el repositorio en el runner
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python  # Paso 2: Configura Python en el entorno
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.12'  # Versión de Python a usar
 
-      - name: Instalar dependencias
+      - name: Instalar dependencias  # Paso 3: Instala las librerías necesarias
         run: |
           pip install yfinance pandas
 
-      - name: Ejecutar script
+      - name: Ejecutar script  # Paso 4: Ejecuta tu script Python que descarga y guarda los datos financieros
         run: python Actual_Stock.py
 
-      - name: Commit y push cambios
+      - name: Commit y push cambios  # Paso 5: Guarda los archivos generados y hace push al repositorio
         uses: EndBug/add-and-commit@v9
         with:
-          message: "📈 Actualización automática"
+          message: "📈 Actualización automática"  # Mensaje del commit
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token para autorizar el push al repositorio
