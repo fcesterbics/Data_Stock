@@ -23,7 +23,7 @@ jobs:
           pip install yfinance pandas
 
       - name: Ejecutar script  # Paso 4: Ejecuta tu script Python que descarga y guarda los datos financieros
-        run: python Historical_Stock.py
+        run: python Actual_Stock.py
 
       - name: Commit y push cambios  # Paso 5: Guarda los archivos generados y hace push al repositorio
         uses: EndBug/add-and-commit@v9
