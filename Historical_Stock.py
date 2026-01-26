@@ -28,26 +28,40 @@ df = yf.download(
 if df.empty:
     print("⚠️ No se descargaron datos.")
 else:
-    # Asegurar orden de columnas
-    df = df[tickers]
+    # 🔧 1. Eliminar tickers sin datos (columnas 100% NaN)
+    df = df.dropna(axis=1, how="all")
+
+    # 🔧 2. Log opcional de tickers fallidos
+    tickers_validos = df.columns.tolist()
+    tickers_fallidos = list(set(tickers) - set(tickers_validos))
+
+    if tickers_fallidos:
+        print("⚠️ Tickers sin datos en Yahoo Finance:")
+        print(tickers_fallidos)
 
     # 🟢 5. Guardar / actualizar CSV histórico
     if not os.path.exists(FILE_NAME):
-        # Si no existe → crear archivo completo
-        df.to_csv(FILE_NAME, index=True)
+        # Crear archivo histórico
+        df.to_csv(FILE_NAME)
         print("📁 Archivo histórico creado.")
     else:
         # Leer histórico existente
         df_existente = pd.read_csv(FILE_NAME, index_col=0)
+
+        # Normalizar índices de fecha
         df_existente.index = pd.to_datetime(df_existente.index)
         df.index = pd.to_datetime(df.index)
 
-        # Filtrar solo fechas nuevas
+        # 🔧 3. Eliminar duplicados de índice (seguridad)
+        df_existente = df_existente[~df_existente.index.duplicated(keep="last")]
+        df = df[~df.index.duplicated(keep="last")]
+
+        # 🔧 4. Tomar solo fechas nuevas
         fechas_nuevas = df.index.difference(df_existente.index)
         df_nuevo = df.loc[fechas_nuevas]
 
         if not df_nuevo.empty:
-            df_final = pd.concat([df_existente, df_nuevo])
+            df_final = pd.concat([df_existente, df_nuevo]).sort_index()
             df_final.to_csv(FILE_NAME)
             print(f"📈 Se agregaron {len(df_nuevo)} nuevas filas.")
         else:
